@@ -61,8 +61,8 @@ fn make_testdata() {
             .iter()
             .cloned()
             .map(Into::into)
-            .map(DataLocaleFamily::with_descendants),
-        DeduplicationStrategy::None.into(),
+            .map(DataLocaleFamily::single),
+        DeduplicationStrategy::RetainBaseLanguages.into(),
         LocaleFallbacker::try_new_unstable(&provider).unwrap(),
     )
     .with_segmenter_models([
@@ -136,7 +136,7 @@ impl DataExporter for ZeroCopyCheckExporter {
         let payload_after;
 
         macro_rules! cb {
-            ($($marker_ty:ty:$marker:ident,)+ #[experimental] $($emarker_ty:ty:$emarker:ident,)+) => {
+            ($($marker_ty:ty:$marker:ident,)+ #[unstable] $($emarker_ty:ty:$emarker:ident,)+) => {
                 ((allocated, deallocated), payload_after) = match marker {
                     k if k == icu_provider::hello_world::HelloWorldV1::INFO => {
                         let deserialized: DataPayload<icu_provider::hello_world::HelloWorldV1> = buffer_payload.into_deserialized(icu_provider::buf::BufferFormat::Postcard1).unwrap();

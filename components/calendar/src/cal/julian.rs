@@ -115,7 +115,7 @@ impl DateFieldsResolver for Julian {
         day: u8,
     ) -> Result<Self::YearInfo, EcmaReferenceYearError> {
         let (ordinal_month, false) = (month.number(), month.is_leap()) else {
-            return Err(EcmaReferenceYearError::MonthCodeNotInCalendar);
+            return Err(EcmaReferenceYearError::MonthNotInCalendar);
         };
         // December 31, 1972 occurs on 12th month, 18th day, 1972 Old Style
         // Note: 1972 is a leap year
@@ -274,7 +274,7 @@ impl Date<Julian> {
     /// Construct new Julian [`Date`].
     ///
     /// Years are arithmetic, meaning there is a year 0 preceded by negative years, with a
-    /// valid range of `-1,000,000..=1,000,000`.
+    /// valid range of `-9999..=9999`.
     ///
     /// ```rust
     /// use icu::calendar::Date;
@@ -486,7 +486,7 @@ mod test {
 
                 assert_eq!(
                     i.cmp(&j),
-                    julian_i.inner.0.cmp(&julian_j.inner.0),
+                    julian_i.inner().0.cmp(&julian_j.inner().0),
                     "Julian directionality inconsistent with directionality for i: {i}, j: {j}"
                 );
             }

@@ -86,7 +86,7 @@ impl DateFieldsResolver for Persian {
         day: u8,
     ) -> Result<Self::YearInfo, EcmaReferenceYearError> {
         let (ordinal_month, false) = (month.number(), month.is_leap()) else {
-            return Err(EcmaReferenceYearError::MonthCodeNotInCalendar);
+            return Err(EcmaReferenceYearError::MonthNotInCalendar);
         };
         // December 31, 1972 occurs on 10th month, 10th day, 1351 AP
         let persian_year = if ordinal_month < 10 || (ordinal_month == 10 && day <= 10) {
@@ -232,7 +232,7 @@ impl Date<Persian> {
     /// Construct new Persian [`Date`].
     ///
     /// Years are arithmetic, meaning there is a year 0 preceded by negative years, with a
-    /// valid range of `-1,000,000..=1,000,000`.
+    /// valid range of `-9999..=9999`.
     ///
     /// ```rust
     /// use icu::calendar::Date;

@@ -92,7 +92,7 @@ impl DateFieldsResolver for Indian {
         day: u8,
     ) -> Result<Self::YearInfo, EcmaReferenceYearError> {
         let (ordinal_month, false) = (month.number(), month.is_leap()) else {
-            return Err(EcmaReferenceYearError::MonthCodeNotInCalendar);
+            return Err(EcmaReferenceYearError::MonthNotInCalendar);
         };
         // December 31, 1972 occurs on 10th month, 10th day, 1894 Shaka
         // Note: 1894 Shaka is also a leap year
@@ -293,7 +293,7 @@ impl Date<Indian> {
     /// Construct new Indian [`Date`].
     ///
     /// Years are arithmetic, meaning there is a year 0 preceded by negative years, with a
-    /// valid range of `-1,000,000..=1,000,000`.
+    /// valid range of `-9999..=9999`.
     ///
     /// ```rust
     /// use icu::calendar::Date;

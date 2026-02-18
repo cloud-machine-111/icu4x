@@ -42,7 +42,7 @@ final class Date implements ffi.Finalizable {
 
   /// Creates a new [Date] from the given fields, which are interpreted in the given calendar system.
   ///
-  /// 🚧 This API is experimental and may experience breaking changes outside major releases.
+  /// 🚧 This API is unstable and may experience breaking changes outside major releases.
   ///
   /// See the [Rust documentation for `try_from_fields`](https://docs.rs/icu/2.1.1/icu/calendar/struct.Date.html#method.try_from_fields) for more information.
   ///
@@ -51,7 +51,7 @@ final class Date implements ffi.Finalizable {
     final temp = _FinalizedArena();
     final result = _icu4x_Date_from_fields_in_calendar_mv1(fields._toFfi(temp.arena), options._toFfi(temp.arena), calendar._ffi);
     if (!result.isOk) {
-      throw CalendarDateFromFieldsError.values[result.union.err];
+      throw CalendarDateFromFieldsError.values.firstWhere((v) => v._ffi == result.union.err);
     }
     return Date._fromFfi(result.union.ok, []);
   }
